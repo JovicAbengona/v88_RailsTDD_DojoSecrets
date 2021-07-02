@@ -5,7 +5,7 @@ class User < ApplicationRecord
 
   validates :name, presence: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: EMAIL_REGEX }
-  validates :password_digest, presence: true, length: { minimum: 8 }
+  validates :password_digest, presence: true, confirmation: true, length: { minimum: 8 }
 
   # this callback will run before saving on create and update
   before_save :downcase_email
