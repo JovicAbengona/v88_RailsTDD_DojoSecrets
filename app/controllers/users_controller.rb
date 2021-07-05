@@ -15,6 +15,8 @@ class UsersController < ApplicationController
   def show
     if current_user
       @user = User.find(params[:id])
+      @secrets = User.find(session[:user_id]).secrets
+      @secrets_liked = User.find(session[:user_id]).secrets_liked
     else
       redirect_to "/"
     end
