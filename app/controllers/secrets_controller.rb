@@ -1,6 +1,6 @@
 class SecretsController < ApplicationController
   def index
-    @secrets = Secret.all
+    @secrets = Secret.left_joins(:likes).select("secrets.*", "COUNT(likes.*) AS num_of_likes").group("secrets.id").order("secrets.id ASC")
   end
 
   def create
