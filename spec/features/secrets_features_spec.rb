@@ -31,6 +31,8 @@ feature "Secret features" do
   feature "Secret Dashboard" do 
     before do 
       @secret = create(:secret, user: @user)
+      @secret = create(:secret, content: "Another content", user: @user)
+      @secret = create(:secret, content: "Another content again", user: @user)
     end
     before(:each) do 
       visit "/secrets"
@@ -40,9 +42,11 @@ feature "Secret features" do
       expect(page).to have_text(@secret2.content)      
     end
     scenario "destroy secret from index page, redirects to user profile page" do
-      click_button 'Delete Secret'
-      expect(current_path).to eq("/users/#{@user.id}")
-      expect(page).not_to have_text(@secret.content)      
+      all('Delete Secret').each do |btn|
+        btn.click
+        expect(current_path).to eq("/users/#{@user.id}")
+        expect(page).not_to have_text(@secret.content) 
+      end
     end    
   end
 end
