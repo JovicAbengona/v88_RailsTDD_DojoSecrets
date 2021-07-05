@@ -3,8 +3,13 @@ class UsersController < ApplicationController
   end
 
   def register
-    user = User.create(user_params)
-    render plain: user.errors.full_messages
+    user = User.new(user_params)
+    if user.save
+      redirect_to "/sessions/new"
+    else
+      flash[:errors] = user.errors.messages
+      redirect_to '/users/new'
+    end
   end
 
   def show
@@ -20,6 +25,6 @@ class UsersController < ApplicationController
 
   private 
     def user_params
-      params.require(:user).permit(:name, :email, :password)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
 end
