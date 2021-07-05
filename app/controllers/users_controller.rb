@@ -21,10 +21,35 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+    user = User.find(params[:id])
+    if user.update(user_update_params)
+      redirect_to "/users/#{params[:id]}"
+    else
+      flash[:errors] = user.errors.messages
+      redirect_to "/users/#{params[:id]}/edit"
+    end
+  end
+
+  def delete
+    user = User.find(params[:id])
+    if user.destroy
+      reset_session
+      redirect_to "/users/new"
+    else
+      render plain: "An error occured!"
+    end
   end
 
   private 
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    end
+
+    def user_update_params
+      params.require(:user).permit(:name, :email)
     end
 end
