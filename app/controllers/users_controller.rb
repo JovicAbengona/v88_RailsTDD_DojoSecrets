@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   skip_before_action :require_login, except: [:show, :edit, :update, :delete]
-  
+  before_action :auth_user, except: [:new, :register]
+
   def new
   end
 
@@ -51,5 +52,11 @@ class UsersController < ApplicationController
 
     def user_update_params
       params.require(:user).permit(:name, :email)
+    end
+
+    def auth_user
+      if session[:user_id] != params[:id].to_i
+        redirect_to "/users/#{session[:user_id]}"
+      end
     end
 end

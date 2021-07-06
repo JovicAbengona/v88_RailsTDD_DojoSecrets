@@ -13,10 +13,13 @@ class SecretsController < ApplicationController
 
   def delete
     secret = Secret.find(params[:id])
-    if secret.destroy
-      redirect_to "/users/#{session[:user_id]}"
+    if session[:user_id] == secret[:user_id]
+      if !secret.destroy
+        flash[:error] = "An error occured!"
+      end
     else
-      render plain: "An error occured!"
+      flash[:error] = "An error occured!"
     end
+    redirect_to "/users/#{session[:user_id]}"
   end
 end
