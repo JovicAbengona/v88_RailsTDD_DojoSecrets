@@ -21,4 +21,14 @@ RSpec.describe SecretsController, type: :controller do
         expect(response).to redirect_to("/sessions/new")
     end
   end
+  context "when signed in as the wrong user" do
+    before do
+      @user2 = create(:user, email: "new@email.com")
+      session[:user_id] = @user2.id
+    end
+    it "cannot destroy another user's secret" do
+      delete :delete, params: { id: @secret.id }
+      expect(response).to have_http_status(:unauthorized)
+    end
+  end
 end
