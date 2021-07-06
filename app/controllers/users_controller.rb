@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  skip_before_action :require_login, except: [:show, :edit, :update, :delete]
+  
   def new
   end
 
@@ -13,13 +15,9 @@ class UsersController < ApplicationController
   end
 
   def show
-    if current_user
-      @user = User.find(params[:id])
-      @secrets = User.find(session[:user_id]).secrets
-      @secrets_liked = User.find(session[:user_id]).secrets_liked
-    else
-      redirect_to "/"
-    end
+    @user = User.find(params[:id])
+    @secrets = User.find(session[:user_id]).secrets
+    @secrets_liked = User.find(session[:user_id]).secrets_liked
   end
 
   def edit

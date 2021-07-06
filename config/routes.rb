@@ -1,11 +1,8 @@
 Rails.application.routes.draw do
-  get 'likes/create'
-  get 'likes/destroy'
-  get 'secrets/index'
   root 'sessions#new'
-  
+
   get '/sessions/new'
-  get 'users/new'
+  get '/users/new'
   get '/users/:id' => 'users#show'
   get '/users/:id/edit' => 'users#edit'
   get '/secrets' => 'secrets#index'
