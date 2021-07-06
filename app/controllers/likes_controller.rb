@@ -10,10 +10,15 @@ class LikesController < ApplicationController
 
   def destroy
     like = Secret.find(params[:id]).likes.where(user: User.find(session[:user_id]))
-    if like[0].destroy
-      redirect_to "/secrets"
+    if like.length > 0
+      if !like[0].destroy
+        flash[:error] = "An error occured!"
+        redirect_to "/secrets"
+      else
+        redirect_to "/secrets"
+      end
     else
-      render plain: "An error occured!"
+      render :file => "public/401.html", :status => 401
     end
   end
 end

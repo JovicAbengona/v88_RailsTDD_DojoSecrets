@@ -15,6 +15,7 @@ class SecretsController < ApplicationController
     secret = Secret.find(params[:id])
     if session[:user_id] == secret[:user_id]
       if !secret.destroy
+        flash[:error] = "An error has occured!"
         redirect_to "/users/#{session[:user_id]}"
       else
         redirect_to "/users/#{session[:user_id]}"
