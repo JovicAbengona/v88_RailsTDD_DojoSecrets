@@ -10,7 +10,14 @@ class UsersController < ApplicationController
     if user.save
       redirect_to "/sessions/new"
     else
+      flash[:reg_name] = user_params["name"]
+      flash[:reg_email] = user_params["email"]
+      
       flash[:errors] = user.errors.messages
+      if user_params[:password].length > 0 && user_params[:password].length < 8
+        flash[:errors][:password] = ["should be at least 8 characters long"]
+        flash[:errors][:password_confirmation] = nil
+      end
       redirect_to '/users/new'
     end
   end
